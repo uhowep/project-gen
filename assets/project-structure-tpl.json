@@ -1,0 +1,22 @@
+[
+  "assets/",
+  "build/Dockerfile",
+  "cmd/api/main.go",
+  "configs/",
+  "deployments/deployment.yaml",
+  "deployments/service.yaml",
+  "deployments/ingress.yaml",
+  "docs/",
+  "internal/api/",
+  "internal/pkg/common/utils.go",
+  "internal/pkg/models/",
+  "internal/pkg/dao/",
+  "internal/pkg/service/",
+  "internal/timer/",
+  "pkg/",
+  "scripts/deploy_k8s.sh",
+  "test/",
+  "web/app/",
+  "web/static/",
+  "web/template"
+]
