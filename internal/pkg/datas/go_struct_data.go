@@ -3,8 +3,10 @@ package datas
 import (
 	"fmt"
 	"os"
+	"project-gen/internal/pkg/common"
 	"project-gen/internal/pkg/models"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -30,9 +32,41 @@ func (gsd *GoStructData) Parse2DataModel() *models.DataModel {
 	// parse to get struct fields
 	fieldMaps := make(map[string]*models.FieldModel)
 	for i := 0; i < getValue.NumField(); i++ {
-		fieldName := getType.Field(i).Name
-		field := models.NewFieldModel(fieldName, getType.Field(i).Type)
-		fieldMaps[fieldName] = field
+		fieldType := getType.Field(i)
+		dbName, existTagField := fieldType.Tag.Lookup("field")
+		if !existTagField {
+			dbName = common.Camel2Case(fieldType.Name)
+		}
+		field := models.NewFieldModel(fieldType.Name, dbName, fieldType.Type)
+		// tags
+		genTags := fieldType.Tag.Get("gen")
+		tags := strings.Split(genTags, ";")
+		for _, tag := range tags {
+			kv := strings.Split(tag, ":")
+			if len(kv) != 2 {
+				continue
+			}
+			switch kv[0] {
+			case "add":
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+					field.Addable = true
+				}
+			case "update":
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+					field.Updatable = true
+				}
+			case "delete":
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+					field.Deletable = true
+				}
+			case "query":
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+					field.Queryable = true
+				}
+			}
+		}
+		// fill
+		fieldMaps[fieldType.Name] = field
 	}
 	// return
 	return models.NewDataModel(structName, fieldMaps)

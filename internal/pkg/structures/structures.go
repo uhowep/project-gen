@@ -16,7 +16,7 @@ func NewStructures() *Structures {
 	templatePath := common.GetSelfFilePath("assets/project-structure-tpl.json")
 	content, err := common.GetFileContent(templatePath)
 	if err != nil {
-		fmt.Println("get %s content failed with %s", templatePath, err.Error())
+		fmt.Println(fmt.Sprintf("get %s content failed with %s", templatePath, err.Error()))
 		os.Exit(1)
 	}
 	// return

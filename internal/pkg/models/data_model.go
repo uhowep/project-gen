@@ -3,25 +3,28 @@ package models
 import "reflect"
 
 type DataModel struct {
-	ModelName string
-	Fields    map[string]*FieldModel
+	ModuleName string
+	ModelName  string
+	Fields     map[string]*FieldModel
 }
 
 type FieldModel struct {
-	Name            string
-	Type            reflect.Type
-	Addable         bool
-	Editable        bool
-	SimpleQueryable bool
-	ListQueryable   bool
-	Deletable       bool
-	DefaultValue    interface{}
+	StructName string
+	DbName     string
+	Type       reflect.Type
+	Addable    bool
+	Updatable  bool
+	Queryable  bool
+	Deletable  bool
+	AddHook    func(fields map[string]*FieldModel)
+	ReadHook   func(fields map[string]*FieldModel)
 }
 
-func NewFieldModel(name string, fieldType reflect.Type) *FieldModel {
+func NewFieldModel(structName, dbName string, fieldType reflect.Type) *FieldModel {
 	return &FieldModel{
-		Name: name,
-		Type: fieldType,
+		StructName: structName,
+		DbName:     dbName,
+		Type:       fieldType,
 	}
 }
 
