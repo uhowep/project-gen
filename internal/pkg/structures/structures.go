@@ -3,6 +3,7 @@ package structures
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"project-gen/internal/pkg/common"
 	"project-gen/internal/pkg/models"
@@ -14,7 +15,7 @@ type Structures struct {
 
 func NewStructures() *Structures {
 	templatePath := common.GetSelfFilePath("assets/project-structure-tpl.json")
-	content, err := common.GetFileContent(templatePath)
+	content, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("get %s content failed with %s", templatePath, err.Error()))
 		os.Exit(1)

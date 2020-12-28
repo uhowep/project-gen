@@ -1,0 +1,5 @@
+{
+  "model_path": "internal/pkg/models/",
+  "dao_path": "internal/pkg/dao/",
+  "api_path": ""
+}

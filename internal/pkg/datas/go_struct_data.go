@@ -24,7 +24,7 @@ func (gsd *GoStructData) Parse2DataModel() *models.DataModel {
 	getType := reflect.TypeOf(gsd.GoStruct)
 	getValue := reflect.ValueOf(gsd.GoStruct)
 	if getType.Kind() != reflect.Struct {
-		fmt.Println(fmt.Sprintf("parse go struct failed because it is non-struct type which is %s", reflect.TypeOf(gsd.GoStruct).String()))
+		fmt.Println(fmt.Sprintf("parse go struct failed because it is non-struct type which is %s", getType.Kind()))
 		os.Exit(1)
 	}
 	// parse to get struct name
@@ -48,19 +48,19 @@ func (gsd *GoStructData) Parse2DataModel() *models.DataModel {
 			}
 			switch kv[0] {
 			case "add":
-				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr == nil && val == true {
 					field.Addable = true
 				}
 			case "update":
-				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr == nil && val == true {
 					field.Updatable = true
 				}
 			case "delete":
-				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr == nil && val == true {
 					field.Deletable = true
 				}
 			case "query":
-				if val, convertErr := strconv.ParseBool(kv[1]); convertErr != nil && val == true {
+				if val, convertErr := strconv.ParseBool(kv[1]); convertErr == nil && val == true {
 					field.Queryable = true
 				}
 			}
@@ -69,7 +69,7 @@ func (gsd *GoStructData) Parse2DataModel() *models.DataModel {
 		fieldMaps[fieldType.Name] = field
 	}
 	// return
-	return models.NewDataModel(structName, fieldMaps)
+	return models.NewDataModel(common.ModelTargetPkgName, structName, fieldMaps)
 }
 
 // parse to get the struct name used by reflect.Type.String()

@@ -9,28 +9,29 @@ type DataModel struct {
 }
 
 type FieldModel struct {
-	StructName string
-	DbName     string
-	Type       reflect.Type
-	Addable    bool
-	Updatable  bool
-	Queryable  bool
-	Deletable  bool
-	AddHook    func(fields map[string]*FieldModel)
-	ReadHook   func(fields map[string]*FieldModel)
+	FieldName string
+	DbName    string
+	Type      reflect.Type
+	Addable   bool
+	Updatable bool
+	Queryable bool
+	Deletable bool
+	AddHook   func(fields map[string]*FieldModel)
+	ReadHook  func(fields map[string]*FieldModel)
 }
 
-func NewFieldModel(structName, dbName string, fieldType reflect.Type) *FieldModel {
+func NewFieldModel(fieldName, dbName string, fieldType reflect.Type) *FieldModel {
 	return &FieldModel{
-		StructName: structName,
-		DbName:     dbName,
-		Type:       fieldType,
+		FieldName: fieldName,
+		DbName:    dbName,
+		Type:      fieldType,
 	}
 }
 
-func NewDataModel(name string, fields map[string]*FieldModel) *DataModel {
+func NewDataModel(moduleName, modelName string, fields map[string]*FieldModel) *DataModel {
 	return &DataModel{
-		ModelName: name,
-		Fields:    fields,
+		ModuleName: moduleName,
+		ModelName:  modelName,
+		Fields:     fields,
 	}
 }
